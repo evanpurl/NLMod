@@ -64,6 +64,26 @@ class rolecommands(commands.Cog):
             await interaction.user.remove_roles(oldrole)
             await interaction.response.send_message(f"You have been added to the Verified role.", ephemeral=True)
 
+    @app_commands.command(name="unverify", description="Admin command to unverify people.")
+    @app_commands.checks.has_permissions(manage_roles=True)
+    async def unverify(self, interaction: discord.Interaction, user: discord.User) -> None:
+        role = discord.utils.get(interaction.guild.roles, name="Unverify")
+        if role:
+            if role in user.roles:
+                await interaction.response.send_message(f"User is already unverified.", ephemeral=True)
+            else:
+                oldrole = discord.utils.get(interaction.guild.roles, name="Verified")
+                await user.add_roles(role)
+                await user.remove_roles(oldrole)
+                await interaction.response.send_message(f"User has been unverified.", ephemeral=True)
+        else:
+            await interaction.guild.create_role(name="Unverified")
+            role = discord.utils.get(interaction.guild.roles, name="Unverified")
+            oldrole = discord.utils.get(interaction.guild.roles, name="Verified")
+            await user.add_roles(role)
+            await user.remove_roles(oldrole)
+            await interaction.response.send_message(f"User has been unverified.", ephemeral=True)
+
 
 async def setup(bot):
     await bot.add_cog(rolecommands(bot))
