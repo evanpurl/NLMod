@@ -52,7 +52,9 @@ class rolecommands(commands.Cog):
             if role in interaction.user.roles:
                 await interaction.response.send_message(f"You have already been verified.", ephemeral=True)
             else:
+                oldrole = discord.utils.get(interaction.guild.roles, name="Unverified")
                 await interaction.user.add_roles(role)
+                await interaction.user.remove_roles(oldrole)
                 await interaction.response.send_message(f"You have been added to the Verified role.", ephemeral=True)
         else:
             await interaction.guild.create_role(name="Verified")

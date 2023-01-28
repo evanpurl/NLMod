@@ -31,22 +31,6 @@ async def on_member_join(member):
         pass
 
 
-@client.event
-async def on_guild_join(guild):
-    category = await discord.utils.get(guild.categories, name="NLAnnouncements")
-    if category:
-        channel = await discord.utils.get(guild.channels, name="NLAnnouncements")
-        if not channel:
-            channel = await guild.create_text_channel('NLAnnouncements', category=category)
-        await channel.send("NLMod has been installed!")
-    else:
-        category = await guild.create_category("NLAnnouncements")
-        channel = await discord.utils.get(guild.channels, name="NLAnnouncements")
-        if not channel:
-            channel = await guild.create_text_channel('NLAnnouncements', category=category)
-        await channel.send("NLMod has been installed!")
-
-
 # reloadcogs command is used to reload all cogs.
 @client.command(name="reloadcogs", description="command to reload cogs")
 async def reload(ctx) -> None:
